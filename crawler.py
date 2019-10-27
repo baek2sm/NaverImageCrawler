@@ -58,7 +58,7 @@ class NaverImageCrawler(CrawlerConfig):
     def down_scroll_and_get_img_links(self, number_by_date):
         self.print_log('Getting image link list.')
         scroll_pos = 1
-        links_list = []
+        links_list = list()
         patient = number_by_date / 5
         while len(links_list) < number_by_date:
             self.driver.execute_script("window.scrollTo(0, " + str(scroll_pos * 500) + ");")
