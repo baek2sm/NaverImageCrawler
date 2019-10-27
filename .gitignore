@@ -1,3 +1,4 @@
 .idea/
 driver/chromedriver*
-images/*.jpg
+images/*
+__pycache__/
