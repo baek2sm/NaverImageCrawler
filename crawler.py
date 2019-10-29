@@ -6,6 +6,7 @@ from config import CrawlerConfig
 import urllib.request
 import calendar
 import uuid
+import sys
 import re
 import os
 
@@ -14,14 +15,16 @@ class NaverImageCrawler(CrawlerConfig):
     def __init__(self):
         super().__init__()
         self.driver = None
-        self.keywords = set()
+        self.keywords = self.set_keywords()
 
     def print_log(self, *log_msg):
         print(datetime.today().strftime("%Y-%m-%d %H:%M:%S"), *log_msg)
 
-    def set_keywords(self, *keyword_set):
+    def set_keywords(self):
         self.print_log('Setting keyword list.')
-        self.keywords = keyword_set
+        with open('./keywords.txt', 'rt', encoding='utf-8') as keywords_txt:
+            keywords = [keyword for keyword in keywords_txt.read().split('\n') if keyword]
+        return keywords
 
     def execute(self, year, month, number_by_date=100):
         self.print_log('Starting Naver Image Crawling.')
@@ -94,6 +97,12 @@ class NaverImageCrawler(CrawlerConfig):
 
 
 if __name__ == '__main__':
-    crawler = NaverImageCrawler()
-    crawler.set_keywords('강아지', '고양이')
-    crawler.execute(year=2019, month=9, number_by_date=100)
+    if len(sys.argv) < 3:
+        print('Please enter the correct parameters.')
+    else:
+        crawler = NaverImageCrawler()
+        crawler.execute(
+            year=int(sys.argv[1]),
+            month=int(sys.argv[2]),
+            number_by_date=100
+        )
